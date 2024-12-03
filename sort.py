@@ -3,43 +3,34 @@ def bubble(list):
         for j in range(len(list) - i - 1):
             if list[j] > list[j + 1]:
                 list[j], list[j + 1] = list[j + 1], list[j]
+    return list
 
-
-def merge(list):
-    if len(list) > 1:
-        mid = len(list) // 2
-        left = list[:mid]
-        right = list[mid:]
-
-        merge(left)
-        merge(right)
-
-        i = j = k = 0
-
-        while i < len(left) and j < len(right):
-            if left[i] < right[j]:
-                list[k] = left[i]
-                i += 1
-            else:
-                list[k] = right[j]
-                j += 1
-            k += 1
-
-        while i < len(left):
-            list[k] = left[i]
+def _merge(left, right):
+    result = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            result.append(left[i])
             i += 1
-            k += 1
-
-        while j < len(right):
-            list[k] = right[j]
+        else:
+            result.append(right[j])
             j += 1
-            k += 1
-            
+    result += left[i:] + right[j:]
+    return result
+
+def merge_sort(list):
+    if len(list) <= 1:
+        return list
+    M = len(list) // 2
+    left = merge_sort(list[:M])
+    right = merge_sort(list[M:])
+    return _merge(left, right)
+    
 def quik(list):
     if len(list) <= 1:
         return list
-    else:
-        pivot = list[0]
-        left = [x for x in list[1:] if x < pivot]
-        right = [x for x in list[1:] if x >= pivot]
-        return quik(left) + [pivot] + quik(right)
+    pivot = list[len(list) // 2]
+    left = [x for x in list if x < pivot]
+    middle = [x for x in list if x == pivot]
+    right = [x for x in list if x > pivot]
+    return quik(left) + middle + quik(right)
