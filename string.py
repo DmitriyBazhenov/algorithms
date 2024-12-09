@@ -36,19 +36,15 @@ def _KMP_search(text, pattern, start_index):
 
     return -1
 
-def search_all(text, pattern):
-    start_index = 0
-    all_indexes = []
-    while True:
-        index = _KMP_search(text, pattern, start_index)
-        if index == -1:
-            break
-        all_indexes.append(index)
-        start_index = index + 1
-    return all_indexes
-
-def find_shift(text, pattern):
-    if len(text) < len(pattern):
+def find_min_shift(S, T):
+    if len(S) != len(T):
         return -1
-    p = text * 2
-    return _KMP_search(p, pattern, 0)
+    double_S = S + S
+    if T in double_S:
+        shift_index = double_S.find(T)
+        return shift_index % len(S)
+    else:
+        return -1
+# S = "abcdef"
+# T = "fabcde"
+# print(find_min_shift(S, T))
