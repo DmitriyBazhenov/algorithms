@@ -90,3 +90,48 @@ if tree.is_balanced():
     print('YES')
 else:
     print('NO')
+
+
+
+class TreeNode:
+    def __init__(self, key):
+        self.left = None
+        self.right = None
+        self.val = key
+
+def insert(root, key):
+    if root is None:
+        return TreeNode(key)
+    else:
+        if root.val < key:
+            root.right = insert(root.right, key)
+        else:
+            root.left = insert(root.left, key)
+    return root
+
+def inorder_traversal(root, result):
+    if root:
+        inorder_traversal(root.left, result)
+        result.append(root.val)
+        inorder_traversal(root.right, result)
+
+def has_one_child(node):
+    return (node.left and not node.right) or (not node.left and node.right)
+
+def find_nodes_with_one_child(root, result):
+    if root:
+        if has_one_child(root):
+            result.append(root.val)
+        find_nodes_with_one_child(root.left, result)
+        find_nodes_with_one_child(root.right, result)
+
+sequence = list(map(int, input().split()))
+sequence.pop()
+
+root = None
+for num in sequence:
+    root = insert(root, num)
+result = []
+find_nodes_with_one_child(root, result)
+result.sort()
+print(*result)
